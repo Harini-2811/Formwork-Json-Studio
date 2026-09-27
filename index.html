@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formwork — JSON Studio</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+</head>
+<body>
+<!-- ============ HOME / LANDING SCREEN ============ -->
+<!-- ============ HOME / LANDING SCREEN ============ -->
+<section class="home-screen" id="homeScreen">
+  <div class="home-content">
+    <span class="brand-mark home-mark">{ }</span>
+    <h1 class="home-title">Formwork</h1>
+    <p class="home-tagline">Format, validate, and anonymise JSON — right in your browser.</p>
+
+    <div class="home-preview" aria-hidden="true">
+      <span class="home-preview-dot dot-red"></span>
+      <span class="home-preview-dot dot-yellow"></span>
+      <span class="home-preview-dot dot-green"></span>
+      <pre class="home-preview-code" id="homePreviewCode"></pre>
+    </div>
+
+    <button class="btn-enter" id="enterAppBtn">Open Studio →</button>
+  </div>
+</section>
+  <!-- ============ RIBBON ============ -->
+  <!-- ============ RIBBON ============ -->
+<div class="app-shell" id="appShell">
+  <header class="ribbon">
+    <div class="ribbon-brand">
+      <span class="brand-mark">{ }</span>
+      <span class="brand-name">Formwork</span>
+    </div>
+
+    <div class="ribbon-status">
+      <span class="status-dot"></span>
+      <span>Client-side only · nothing leaves this tab</span>
+    </div>
+
+    <div class="ribbon-controls">
+      <div class="sample-select">
+        <select id="sampleSelect">
+          <option value="">Load sample…</option>
+          <option value="user">User record</option>
+          <option value="orders">Order list</option>
+          <option value="broken">Broken JSON</option>
+        </select>
+      </div>
+
+      <div class="theme-switch" id="themeSwitch" role="radiogroup" aria-label="Theme">
+        <button class="theme-opt" data-theme="light" aria-label="Light theme">☀</button>
+        <button class="theme-opt is-active" data-theme="slate" aria-label="Slate theme">◐</button>
+        <button class="theme-opt" data-theme="dracula" aria-label="Dracula theme">◆</button>
+      </div>
+
+      <button class="btn btn-ghost" id="resetBtn">Reset</button>
+    </div>
+  </header>
+
+  <!-- ============ MAIN WORKSPACE ============ -->
+  <main class="workspace">
+
+    <!-- LEFT: INPUT -->
+    <section class="pane pane-input" aria-label="Input workspace">
+      <div class="pane-head">
+        <h2>Input</h2>
+        <span class="pane-hint">Paste raw, messy, or minified JSON</span>
+      </div>
+      <div class="editor-frame">
+        <div class="gutter" id="inputGutter"><span>1</span></div>
+        <textarea
+          id="inputArea"
+          class="code-area"
+          spellcheck="false"
+          placeholder='{"user":{"name":"Alex","role":"student","skills":["HTML","CSS"]}}'
+        ></textarea>
+      </div>
+      <div class="pane-foot">
+        <span id="inputStats">0 bytes · 0 lines</span>
+      </div>
+    </section>
+
+    <!-- CENTER: CONTROLS -->
+    <div class="control-rail" aria-label="Actions">
+      <button class="rail-btn rail-btn-primary" id="formatBtn">
+        <span class="rail-icon">↦</span>
+        <span>Format</span>
+      </button>
+      <button class="rail-btn" id="validateBtn">
+        <span class="rail-icon">✓</span>
+        <span>Validate</span>
+      </button>
+      <button class="rail-btn" id="mockBtn">
+        <span class="rail-icon">▤</span>
+        <span>Mock ×100</span>
+      </button>
+      <button class="rail-btn" id="anonBtn">
+        <span class="rail-icon">◐</span>
+        <span>Anonymise</span>
+      </button>
+
+      <div class="rail-divider"></div>
+
+      <button class="rail-btn rail-btn-ghost" id="clearBtn">
+        <span class="rail-icon">✕</span>
+        <span>Clear</span>
+      </button>
+    </div>
+
+    <!-- RIGHT: OUTPUT -->
+    <section class="pane pane-output" aria-label="Formatted output">
+      <div class="pane-head">
+        <h2>Output</h2>
+        <span class="pane-hint">Prettified, indented, ready to copy</span>
+      </div>
+      <div class="editor-frame">
+        <div class="gutter" id="outputGutter"><span>1</span></div>
+<pre class="code-area code-output" id="outputArea" tabindex="0"><code id="outputCode" class="language-json">// Formatted JSON will appear here</code></pre>        <button class="copy-btn" id="copyBtn" title="Copy output">Copy</button>
+      </div>
+      <div class="pane-foot">
+        <span id="outputStats">Waiting for input…</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ ANALYTICS SIDEBAR ============ -->
+  <aside class="analytics" aria-label="Analytics">
+    <h3>Analytics</h3>
+    <dl class="metric-list">
+      <div class="metric">
+        <dt>Byte size</dt>
+        <dd id="metricBytes">0 B</dd>
+      </div>
+      <div class="metric">
+        <dt>Characters</dt>
+        <dd id="metricChars">0</dd>
+      </div>
+      <div class="metric">
+        <dt>Max depth</dt>
+        <dd id="metricDepth">0</dd>
+      </div>
+      <div class="metric">
+        <dt>Arrays</dt>
+        <dd id="metricArrays">0</dd>
+      </div>
+      <div class="metric">
+        <dt>Key/value pairs</dt>
+        <dd id="metricPairs">0</dd>
+      </div>
+    </dl>
+  </aside>
+
+  <!-- ============ BOTTOM DRAWER ============ -->
+  <footer class="drawer" id="drawer">
+    <button class="drawer-tab" id="drawerToggle" aria-expanded="false">
+      <span class="drawer-tab-icon">▲</span>
+      <span>Validation &amp; Schema</span>
+      <span class="drawer-tab-badge" id="drawerBadge">no issues</span>
+    </button>
+
+    <div class="drawer-body" id="drawerBody">
+      <nav class="drawer-tabs">
+        <button class="drawer-nav-btn is-active" data-panel="errors">Errors</button>
+        <button class="drawer-nav-btn" data-panel="schema">Schema</button>
+        <button class="drawer-nav-btn" data-panel="rules">Rules</button>
+      </nav>
+
+      <div class="drawer-panel is-active" data-panel="errors">
+        <div class="error-card">
+          <span class="error-card-icon">!</span>
+          <div class="error-card-body">
+            <p class="error-card-title">Nothing to check yet</p>
+            <p class="error-card-desc">Paste some JSON on the left and click Format to see friendly, plain-English error explanations here.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-panel" data-panel="schema">
+        <p class="drawer-empty">Schema map will appear once you format valid JSON.</p>
+      </div>
+
+      <div class="drawer-panel" data-panel="rules">
+        <p class="drawer-empty">Custom validation rules will live here.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+<script src="app.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
