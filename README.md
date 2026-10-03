@@ -3,7 +3,7 @@
 A client-side JSON formatter, validator, anonymiser, and mock-data generator — built entirely with HTML, CSS, and JavaScript. Nothing leaves your browser.
 
 ## Live Demo
-[formwork-json-studio.vercel.app/](formwork-json-studio.vercel.app/)
+[formwork-json-studio.vercel.app/](formwork-json-studio.vercel.app)
 
 ## Features
 - **Format** — prettify messy or minified JSON with proper indentation
